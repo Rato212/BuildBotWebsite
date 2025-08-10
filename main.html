@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>buildBot - AI-Powered Discord Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            padding: 150px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(90deg); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4ecdc4;
+        }
+
+        .ai-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            text-align: center;
+        }
+
+        .ai-section h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ai-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .ai-feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ai-feature:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stats {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .stat {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            padding: 60px 0 40px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .footer-section h3 {
+            color: #4ecdc4;
+            margin-bottom: 20px;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #4ecdc4;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-features {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .modal-feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-feature-item h4 {
+            color: #4ecdc4;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ff6b6b;
+        }
+
+        .highlight-feature {
+            background: linear-gradient(45deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            border: 2px solid rgba(255, 107, 107, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element" style="width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-element" style="width: 60px; height: 60px; top: 20%; right: 10%; animation-delay: 2s;"></div>
+        <div class="floating-element" style="width: 100px; height: 100px; bottom: 10%; left: 20%; animation-delay: 4s;"></div>
+    </div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">🤖 buildBot</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#ai">AI Powers</a></li>
+                <li><a href="#github">GitHub</a></li>
+                <li><a href="#invite">Invite</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>buildBot</h1>
+            <p>Der ultimative AI-powered Discord Bot, der sich selbst programmieren und nach deinen Wünschen anpassen kann. Revolutionäre KI-Features, automatische Code-Generierung und premium Funktionen - komplett kostenlos und endlos erweiterbar.</p>
+            <div class="cta-buttons">
+                <a href="https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID&permissions=8&scope=bot%20applications.commands" class="btn btn-primary">🚀 Invite to Server</a>
+                <a href="https://github.com/yourusername/buildbot" class="btn btn-secondary">⭐ GitHub Repository</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Revolutionäre Features</h2>
+            <div class="features-grid">
+                <div class="feature-card highlight-feature" data-modal="self-programming">
+                    <span class="feature-icon">🧬</span>
+                    <h3>Self-Programming AI</h3>
+                    <p>Revolutionäre KI, die ihren eigenen Code schreibt und modifiziert basierend auf deinen Wünschen. Der Bot kann sich automatisch neue Features programmieren und sich an deine Server-Bedürfnisse anpassen.</p>
+                </div>
+                <div class="feature-card highlight-feature" data-modal="wish-adaptation">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Wunsch-Anpassung</h3>
+                    <p>Sag dem Bot einfach was du willst - er programmiert sich automatisch die benötigten Features. Natural Language Programming macht jeden Wunsch zur Realität, ohne dass du coden musst.</p>
+                </div>
+                <div class="feature-card" data-modal="ai-chat">
+                    <span class="feature-icon">🧠</span>
+                    <h3>AI Chat Assistant</h3>
+                    <p>Fortschrittliche KI für natürliche Gespräche, die sich kontinuierlich an deine Community anpasst und lernt.</p>
+                </div>
+                <div class="feature-card" data-modal="raid-protection">
+                    <span class="feature-icon">🛡️</span>
+                    <h3>Advanced Raid Protection</h3>
+                    <p>Intelligentes Anti-Raid System mit KI-gestützter Bedrohungsanalyse und automatischer Server-Wiederherstellung.</p>
+                </div>
+                <div class="feature-card" data-modal="moderation">
+                    <span class="feature-icon">🔒</span>
+                    <h3>Smart Moderation</h3>
+                    <p>KI-gestützte Inhaltsfilterung und intelligente Verhaltensanalyse für einen sauberen Server.</p>
+                </div>
+                <div class="feature-card" data-modal="music">
+                    <span class="feature-icon">🎵</span>
+                    <h3>Premium Music Player</h3>
+                    <p>Hochqualitäts-Musik-Streaming mit erweiterten Audio-Kontrollen - normalerweise kostenpflichtige Features kostenlos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ai-section" id="ai">
+        <div class="container">
+            <h2>KI-Powered Intelligence</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px;">Erlebe die nächste Generation von Discord Bots mit revolutionärer KI, die sich selbst programmieren und jeden Wunsch erfüllen kann</p>
+            
+            <div class="ai-features">
+                <div class="ai-feature" data-modal="adaptive-programming">
+                    <h3>🧬 Adaptive Programming</h3>
+                    <p>Der Bot kann seinen eigenen Code in Echtzeit schreiben und modifizieren, basierend auf deinen spezifischen Anfragen und Wünschen.</p>
+                </div>
+                <div class="ai-feature" data-modal="natural-language-coding">
+                    <h3>💬 Natural Language Coding</h3>
+                    <p>Beschreibe einfach was du willst - der Bot versteht natürliche Sprache und programmiert automatisch die entsprechenden Features.</p>
+                </div>
+                <div class="ai-feature" data-modal="context-aware">
+                    <h3>🎯 Context-Aware Responses</h3>
+                    <p>KI versteht Konversationskontext und passt sich kontinuierlich an deine Server-Persönlichkeit an.</p>
+                </div>
+                <div class="ai-feature" data-modal="content-generation">
+                    <h3>📝 Content Generation</h3>
+                    <p>Erstelle kreative Inhalte, Server-Ankündigungen und individuelle Texte auf Wunsch.</p>
+                </div>
+                <div class="ai-feature" data-modal="evolutionary-learning">
+                    <h3>🔄 Evolutionary Learning</h3>
+                    <p>Der Bot entwickelt sich kontinuierlich weiter, lernt von jeder Interaktion und wird täglich besser und intelligenter.</p>
+                </div>
+                <div class="ai-feature" data-modal="community-driven">
+                    <h3>👥 Community-Driven Features</h3>
+                    <p>Deine Community kann Features vorschlagen, die automatisch programmiert und von allen bewertet werden können.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">∞</div>
+                    <div>Mögliche Features</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">24/7</div>
+                    <div>Self-Programming</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div>Anpassbar</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">0€</div>
+                    <div>Kosten</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>buildBot</h3>
+                    <p>Der fortschrittlichste selbstprogrammierende Discord Bot mit revolutionären KI-Features, der sich nach deinen Wünschen anpassen und kontinuierlich weiterentwickeln kann.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#invite">Bot Einladen</a>
+                    <a href="#features">Features</a>
+                    <a href="#ai">KI Fähigkeiten</a>
+                    <a href="https://github.com/yourusername/buildbot">Dokumentation</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="https://github.com/yourusername/buildbot">GitHub Repository</a>
+                    <a href="https://github.com/yourusername/buildbot/issues">Issues Melden</a>
+                    <a href="https://github.com/yourusername/buildbot/wiki">Wiki & Guides</a>
+                    <a href="mailto:support@buildbot.dev">Support</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <a href="https://discord.gg/YOUR_DISCORD_INVITE">Support Server</a>
+                    <a href="https://github.com/yourusername/buildbot/discussions">Diskussionen</a>
+                    <a href="#updates">Updates & News</a>
+                    <a href="#feedback">Feedback</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 buildBot. Self-Programming AI Discord Bot. Made with ❤️ für die Discord Community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Self-Programming Modal -->
+    <div id="self-programming" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <span class="modal-icon">🧬</span>
+                <h2>Self-Programming AI</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-features">
+                    <div class="modal-feature-item">
+                        <h4>🔧 Real-Time Code Generation</h4>
+                        <p>Der Bot kann neue Funktionen und Features on-demand basierend auf deinen spezifischen Wünschen und Anforderungen programmieren.</p>
+                    </div>
+                    <div class="modal-feature-item">
+                        <h4>⚡ Custom Command Creation</h4>
+                        <p>Beschreibe einfach was du willst, und der Bot programmiert und deployed automatisch neue Custom Commands für deinen Server.</p>
+                    </div>
+                    <div class="modal-feature-item">
+                        <h4>🔄 Feature Evolution</h4>
+                        <p>Bestehende Features verbessern und passen sich kontinuierlich basierend auf Nutzungsmustern und User-Feedback an.</p>
+                    </div>
+                    <div class="modal-feature-item">
+                        <h4>🚀 Intelligent Code Optimization</h4>
+                        <p>Der Bot analysiert seinen eigenen Code für Performance-Verbesserungen und optimiert automatisch für bessere Effizienz.</p>
+                    </div>
+                    <div class="modal-feature-item">
+                        <h4>🧩 Plugin Architecture</h4>
+                        <p>Erstellt und integriert automatisch neue Plugins wenn User Funktionalitäten anfordern, die noch nicht existieren.</p>
+                    </div>
+                    <div class="modal-feature-item">
+                        <h4>🛡️ Safe Code Deployment</h4>
+                        <p>Aller selbst-generierte Code durchläuft Sicherheitschecks und Tests vor dem Deployment um Server-Stabilität zu gewährleisten.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wish Adaptation Modal -->
+    <div id="wish-adaptation" class="modal">
+        <div class="
